@@ -1,4 +1,4 @@
-from Crypto.Hash import SHA as SHA1
+from Crypto.Hash import SHA256
 from Crypto.Hash import SHA512
 from Crypto.Random import random
 
@@ -7,10 +7,12 @@ e=65537
 
 #Hash password into encryption key
 def getKey(password):
-    hash1=SHA1.new()
+    hash1=SHA256.new()
     hash1.update(password.encode("utf-8"))
     #hexall=lambda d: reduce(lambda x,y:x+y,map(hex,d))
-    return hash1.digest()[0:16]
+    digest=hash1.digest()
+    key=[digest[i]^digest[i+16] for i in range(16)]
+    return bytes(key)
 
 #Extended euclidean algorithm code copied from wikibooks
 def xgcd(b, n):
@@ -155,7 +157,7 @@ def testfunc(uname,password):
     print("decr: ",decr,"\n")
     pass
 
-#Hash based (512) cryptographically secure yet deterministic prng
+#Hash based (SHA512) cryptographically secure yet deterministic prng
 class NumberGenerator:
     """Generates a n-bit n%256=0 cryptographically secure psudorandom
     deterministic to the seed using SHA512 hash. I use it for calculating

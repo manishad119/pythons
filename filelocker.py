@@ -45,7 +45,7 @@ def encryptFile(srcFile,dstFile,pword):
     src=open(srcFile,"rb",4096)
     dst=open(dstFile,"w+b",4096)
     key=man_secgen.getKey(pword)
-    #print (" key ", key)
+    #print (" keylen =", len(key)," key=",key)
     # add MAGIC1 at the beginning of file
     dst.write(struct.pack("<I",MAGIC1))
     #Encrypted MAGIC2 follows.Used for quick password check
